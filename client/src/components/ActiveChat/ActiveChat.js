@@ -20,11 +20,28 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+// Need to write comparator for array.sort to use that handles date-times
+// Testing data:
+// let earlierDate = "2022-01-21T01:07:54.777Z"
+// let laterDate = "2022-01-21T01:07:54.888Z"
+function compareDates(dateOne,dateTwo) {
+  console.assert(typeof(dateOne) === "string" && typeof(dateTwo) === "string");
+  for (let i = 0; i < dateOne.length; i++) {
+    if (dateOne[i] < dateTwo[i]) {
+      return -1
+    }
+    if (dateOne[i] > dateTwo[i]) {
+      return 1
+    }
+  }
+  return 0
+}
 const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
   const conversation = props.conversation || {};
 
+  const messages = (conversation.messages) ? [...conversation.messages].sort((a, b) => compareDates(a.createdAt, b.createdAt)) : []
   return (
     <Box className={classes.root}>
       {conversation.otherUser && (
@@ -35,7 +52,7 @@ const ActiveChat = (props) => {
           />
           <Box className={classes.chatContainer}>
             <Messages
-              messages={conversation.messages}
+              messages={messages}
               otherUser={conversation.otherUser}
               userId={user.id}
             />
