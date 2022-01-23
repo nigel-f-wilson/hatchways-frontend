@@ -12,6 +12,7 @@ import {
 import { login } from "./store/utils/thunkCreators";
 
 const Login = (props) => {
+  const classes = useStyles();
   const history = useHistory();
   const { user, login } = props;
 
@@ -28,12 +29,11 @@ const Login = (props) => {
   }
 
   return (
-    <Grid container justify="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to register?</Typography>
-          <Button onClick={() => history.push("/register")}>Register</Button>
-        </Grid>
+    <Grid container className={classes.root}  >
+      <Grid item xs={5} >
+        <WelcomeHeader />
+      </Grid>
+      <Grid item xs={7} className={classes.formArea} >
         <form onSubmit={handleLogin}>
           <Grid>
             <Grid>
@@ -61,6 +61,19 @@ const Login = (props) => {
             </Grid>
           </Grid>
         </form>
+      </Grid>
+      <Box className={classes.topRight} >
+        <Typography
+          color="textSecondary"
+          children="Don't have an account?"
+        />
+        <Button 
+          className={classes.createAccountButton}
+          children="Create account"
+          variant="contained"
+
+          onClick={() => history.push("/register")}
+        />
       </Box>
     </Grid>
   );
