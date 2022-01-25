@@ -24,18 +24,7 @@ const useStyles = makeStyles(() => ({
 // Testing data:
 // let earlierDate = "2022-01-21T01:07:54.777Z"
 // let laterDate = "2022-01-21T01:07:54.888Z"
-function compareDates(dateOne,dateTwo) {
-  console.assert(typeof(dateOne) === "string" && typeof(dateTwo) === "string");
-  for (let i = 0; i < dateOne.length; i++) {
-    if (dateOne[i] < dateTwo[i]) {
-      return -1
-    }
-    if (dateOne[i] > dateTwo[i]) {
-      return 1
-    }
-  }
-  return 0
-}
+const compareDates = (dateOne, dateTwo) => new Date(dateOne) - new Date(dateTwo)
 const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
