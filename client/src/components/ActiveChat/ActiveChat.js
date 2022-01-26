@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-
 const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
