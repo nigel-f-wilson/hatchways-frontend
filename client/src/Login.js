@@ -3,8 +3,33 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { Grid, Box, } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
+import { makeStyles } from "@material-ui/core/styles";
+
+import WelcomeHeader from "./components/LoginAndSignup/WelcomeHeader";
 import { LinkToSignup } from "./components/LoginAndSignup/Navigation";
 import { LoginForm } from "./components/LoginAndSignup/Forms";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    overflow: "hidden"
+  },
+  formArea: {
+    display: "flex",
+    alignItems: "center"
+  },
+  topRight: {
+    height: "60px",
+    position: "absolute",
+    top: "2rem",
+    right: "3rem",    
+  },
+  button: {
+    marginLeft: "2rem",
+    backgroundColor: theme.palette.common.white,
+    borderColor: theme.palette.primary.main
+  },
+
+}));
 
 const Login = (props) => {
   const classes = useStyles();
