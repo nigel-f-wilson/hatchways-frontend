@@ -8,7 +8,7 @@ import chatBubbleIcon from "../../assets/bubble.svg";
 
 const useStyles = makeStyles((theme) => ({
   image: {
-    height: "100vh",
+    height: "inherit",
     backgroundImage: `url(${bgImage})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "top center",
