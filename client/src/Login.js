@@ -1,21 +1,23 @@
 import React from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Grid, Box, } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
-import { makeStyles } from "@material-ui/core/styles";
 
+import { makeStyles } from "@material-ui/core/styles";
 import WelcomeHeader from "./components/LoginAndSignup/WelcomeHeader";
 import { LinkToSignup } from "./components/LoginAndSignup/Navigation";
 import { LoginForm } from "./components/LoginAndSignup/Forms";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    overflow: "hidden"
+    overflow: "hidden",
+    height: "100vh",
+    display: "flex",
+    alignItems: "center",
   },
   formArea: {
-    display: "flex",
-    alignItems: "center"
+    height: "45vh",
   },
   topRight: {
     height: "60px",
@@ -23,17 +25,10 @@ const useStyles = makeStyles((theme) => ({
     top: "2rem",
     right: "3rem",    
   },
-  button: {
-    marginLeft: "2rem",
-    backgroundColor: theme.palette.common.white,
-    borderColor: theme.palette.primary.main
-  },
-
 }));
 
 const Login = (props) => {
   const classes = useStyles();
-  const history = useHistory();
   const { user, login } = props;
 
   const handleLogin = async (event) => {
