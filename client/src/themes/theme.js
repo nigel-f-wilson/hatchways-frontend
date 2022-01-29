@@ -19,7 +19,7 @@ export const theme = createTheme({
       textTransform: "none",
       letterSpacing: 0.25,
       fontWeight: 600,
-      fontSize: ".95rem"
+      fontSize: ".95rem",
     }
   },
   overrides: {
@@ -43,8 +43,12 @@ export const theme = createTheme({
       asterisk: {
         color: "transparent"
       }
-    } 
-    
+    },
+    MuiButton: {
+      root: {
+        minWidth: "max-content",
+      }
+    }
   },
   palette: {
     primary: { 
