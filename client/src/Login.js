@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
+import { LinkToSignup } from "./components/LoginAndSignup/Navigation";
 import { LoginForm } from "./components/LoginAndSignup/Forms";
 
 const Login = (props) => {
@@ -39,17 +40,7 @@ const Login = (props) => {
         <LoginForm handleLogin={handleLogin} />
       </Grid>
       <Box className={classes.topRight} >
-        <Typography
-          color="textSecondary"
-          children="Don't have an account?"
-        />
-        <Button 
-          className={classes.createAccountButton}
-          children="Create account"
-          variant="contained"
-
-          onClick={() => history.push("/register")}
-        />
+        <LinkToSignup  />
       </Box>
     </Grid>
   );
@@ -60,7 +51,6 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (credentials) => {
