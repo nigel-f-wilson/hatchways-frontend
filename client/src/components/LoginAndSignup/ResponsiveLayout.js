@@ -4,12 +4,16 @@ import { Grid, Box, Paper } from "@material-ui/core";
 import WelcomeHeader from "./WelcomeHeader";
 import { LinkToLogin, LinkToSignup } from "./Navigation";
 import { LoginForm, SignupForm } from "./Forms";
+import { useScreenWidth } from "../../hooks";
 
 import useStyles from "./styles";
 
 export function ResponsiveLayout(props) {
   const classes = useStyles();
-  const { layout, page, login, register } = props
+  const width = useScreenWidth()
+  const { page, login, register } = props
+
+  let layout = (width > 850) ? "desktop" : "mobile"
 
   let form = getForm(page)
   function getForm(page) {
