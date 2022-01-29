@@ -3,7 +3,7 @@ import { createTheme } from "@material-ui/core";
 export const theme = createTheme({
   typography: {
     fontFamily: "Open Sans, sans-serif",
-    fontSize: "14px",
+    fontSize: 14,
     h1: {
       fontWeight: "400",
       fontSize: "26px",
