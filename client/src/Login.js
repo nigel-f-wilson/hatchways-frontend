@@ -1,14 +1,7 @@
 import React from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  Grid,
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  TextField,
-} from "@material-ui/core";
+import { Grid, Box, } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
 import { LinkToSignup } from "./components/LoginAndSignup/Navigation";
 import { LoginForm } from "./components/LoginAndSignup/Forms";
