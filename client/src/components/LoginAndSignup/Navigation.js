@@ -47,22 +47,22 @@ export const LinkToSignup = (props) => {
   );
 };
 
-// export const LinkToLogin = (props) => {
-//   const classes = useStyles();
-//   const history = useHistory();
+export const LinkToLogin = (props) => {
+  const classes = useStyles();
+  const history = useHistory();
 
-//   return (
-//     <Box className={classes.root} >
-//       <Typography
-//         color="textSecondary"
-//         children="Already have an account?"
-//       />
-//       <Button
-//         className={classes.button}
-//         children="Login"
-//         variant="contained"
-//         onClick={() => history.push("/login")}
-//       />
-//     </Box>
-//   );
-// };
+  return (
+    <Box className={classes.root} >
+      <Typography
+        color="textSecondary"
+        children="Already have an account?"
+      />
+      <Button
+        className={classes.button}
+        children="Login"
+        variant="contained"
+        onClick={() => history.push("/login")}
+      />
+    </Box>
+  );
+};
