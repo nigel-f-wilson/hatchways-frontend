@@ -143,6 +143,7 @@ export const SignupForm = (props) => {
           autoComplete="off"
           required
         />
+        {/* <FormHelperText children={error ? "Passwords must match" : null} /> */}
       </FormControl>
       <FormControl margin="normal" required fullWidth className={classes.input} error={error} >
         <TextField
