@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { useScreenWidth } from "../../hooks";
 
-import { DesktopLayout, MobileLayout } from "./Layouts";
+import { ResponsiveLayout } from "./Layouts";
 import { login } from "../../store/utils/thunkCreators";
 
 const Login = (props) => {
@@ -14,17 +14,26 @@ const Login = (props) => {
     return <Redirect to="/home" />;
   }
   
-  if (width > 850) {
-    return <DesktopLayout
+  let layout = (width > 850) ? "desktop" : "mobile"
+  
+  // if (width > 850) {
+  //   return <DesktopLayout
+  //     page="login"
+  //     login={login}
+  //   />
+  // } else {
+  //   return <MobileLayout
+  //     page="login"
+  //     login={login}
+  //   />
+  // }
+  return (
+    <ResponsiveLayout
+      layout={layout}
       page="login"
       login={login}
     />
-  } else {
-    return <MobileLayout
-      page="login"
-      login={login}
-    />
-  }
+  )
 };
 
 const mapStateToProps = (state) => {
