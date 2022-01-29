@@ -54,7 +54,11 @@ export const theme = createTheme({
         color: "#b0b0b0"
       },
     },
-    
+    MuiFormLabel: {
+      asterisk: {
+        color: "transparent"
+      }
+    } 
     
   },
   palette: {
