@@ -33,25 +33,42 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark
     }
   },
-
 }));
 
-
 export const LoginForm = (props) => {
-  const { handleLogin } = props
+  const { login } = props
   const classes = useStyles();
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const username = event.target.username.value;
+    // const email = event.target.email.value;
+    const password = event.target.password.value;
+    await login({ username, password });
+  };
+
   return (
     <Box component="form"
       className={classes.form}
       onSubmit={handleLogin}
     >
       <Typography children="Welcome back!" variant="h2" />
-      <FormControl margin="normal" required fullWidth className={classes.input} >
+      {/* <FormControl margin="normal" required fullWidth className={classes.input} >
         <TextField
           label="E-mail address"
           aria-label="email"
           name="email"
           type="email"
+          autoComplete="off"
+          required
+        />
+      </FormControl> */}
+      <FormControl margin="normal" required fullWidth className={classes.input} >
+        <TextField
+          label="Username"
+          aria-label="username"
+          name="username"
+          type="text"
           autoComplete="off"
           required
         />
