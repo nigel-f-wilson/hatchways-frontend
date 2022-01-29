@@ -50,11 +50,12 @@ export const LoginForm = (props) => {
       <Typography children="Welcome back!" variant="h2" />
       <FormControl margin="normal" required fullWidth className={classes.input} >
         <TextField
-          label="Username"
-          aria-label="username"
-          name="username"
-          type="text"
+          label="E-mail address"
+          aria-label="email"
+          name="email"
+          type="email"
           autoComplete="off"
+          required
         />
       </FormControl>
       <FormControl margin="normal" required fullWidth className={classes.input}  >
@@ -64,6 +65,7 @@ export const LoginForm = (props) => {
           type="password"
           name="password"
           autoComplete="off"
+          required
         />
       </FormControl>
       <Button 
