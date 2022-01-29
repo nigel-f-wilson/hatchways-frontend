@@ -47,7 +47,12 @@ export const theme = createTheme({
       root: {
         minWidth: "max-content",
       }
-    }
+    },
+    MuiFormHelperText: {
+      root: {
+        color: "#F00",
+      }
+    },
   },
   palette: {
     primary: { 
