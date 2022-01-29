@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import {
   Box,
@@ -95,8 +95,29 @@ export const LoginForm = (props) => {
 }
 
 export const SignupForm = (props) => {
-  const { handleRegister, formErrorMessage } = props
+  const { register } = props
+
   const classes = useStyles();
+  const [error, setError] = useState(false);
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    const username = event.target.username.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const confirmPassword = event.target.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+      setError("Passwords must match")
+      // setFormErrorMessage({ confirmPassword: "Passwords must match" });
+      return;
+    }
+    else {
+      setError(false)
+    }
+    await register({ username, email, password });
+  };
+
   return (
     <Box component="form"
       className={classes.form}
@@ -123,7 +144,7 @@ export const SignupForm = (props) => {
           required
         />
       </FormControl>
-      <FormControl margin="normal" required fullWidth className={classes.input} error={!!formErrorMessage.confirmPassword} >
+      <FormControl margin="normal" required fullWidth className={classes.input} error={error} >
         <TextField
           label="Password"
           aria-label="password"
@@ -133,11 +154,9 @@ export const SignupForm = (props) => {
           required
           inputProps={{ minLength: 6 }}
         />
-        <FormHelperText>
-          {formErrorMessage.confirmPassword}
-        </FormHelperText>
+        <FormHelperText children={error ? "Passwords must match" : null} />
       </FormControl>
-      <FormControl margin="normal" required fullWidth className={classes.input} error={!!formErrorMessage.confirmPassword} >
+      <FormControl margin="normal" required fullWidth className={classes.input} error={error} >
         <TextField
           label="Confirm Password"
           aria-label="confirm-password"
@@ -147,9 +166,7 @@ export const SignupForm = (props) => {
           required
           inputProps={{ minLength: 6 }}
         />
-        <FormHelperText>
-          {formErrorMessage.confirmPassword}
-        </FormHelperText>
+        <FormHelperText children={error ? error : null} />
       </FormControl>
       <Button
         className={classes.button}
