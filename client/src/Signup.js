@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  Grid,
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  TextField,
-  FormHelperText,
-} from "@material-ui/core";
+import { Grid, Box, Paper } from "@material-ui/core";
 import { register } from "./store/utils/thunkCreators";
 
 import { makeStyles } from "@material-ui/core/styles";
