@@ -13,20 +13,8 @@ const Login = (props) => {
   if (user.id) {
     return <Redirect to="/home" />;
   }
-  
   let layout = (width > 850) ? "desktop" : "mobile"
   
-  // if (width > 850) {
-  //   return <DesktopLayout
-  //     page="login"
-  //     login={login}
-  //   />
-  // } else {
-  //   return <MobileLayout
-  //     page="login"
-  //     login={login}
-  //   />
-  // }
   return (
     <ResponsiveLayout
       layout={layout}
