@@ -26,8 +26,9 @@ export const theme = createTheme({
     },
     button: {
       textTransform: "none",
-      letterSpacing: 0.5,
-      fontWeight: 600 
+      letterSpacing: 0.25,
+      fontWeight: 600,
+      fontSize: ".95rem"
     }
   },
   overrides: {
