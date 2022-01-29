@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   input: {
-    height: "25%",
     fontSize: "1.2rem"
   },
   button: {
