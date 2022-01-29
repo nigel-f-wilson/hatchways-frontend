@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
+import { LoginForm } from "./components/LoginAndSignup/Forms";
 
 const Login = (props) => {
   const classes = useStyles();
@@ -33,34 +34,9 @@ const Login = (props) => {
       <Grid item xs={5} >
         <WelcomeHeader />
       </Grid>
-      <Grid item xs={7} className={classes.formArea} >
-        <form onSubmit={handleLogin}>
-          <Grid>
-            <Grid>
-              <FormControl margin="normal" required>
-                <TextField
-                  aria-label="username"
-                  label="Username"
-                  name="username"
-                  type="text"
-                />
-              </FormControl>
-            </Grid>
-            <FormControl margin="normal" required>
-              <TextField
-                label="password"
-                aria-label="password"
-                type="password"
-                name="password"
-              />
-            </FormControl>
-            <Grid>
-              <Button type="submit" variant="contained" size="large">
-                Login
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
+      <Grid item xs={1} />
+      <Grid item xs={5} className={classes.formArea} >
+        <LoginForm handleLogin={handleLogin} />
       </Grid>
       <Box className={classes.topRight} >
         <Typography
