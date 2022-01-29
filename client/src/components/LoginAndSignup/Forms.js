@@ -14,8 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    width: "90%",
-    minWidth: "380px",
+    width: "100%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     width: "160px",
     height: "56px",
-    margin: "0 auto",
+    margin: "1rem auto",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     "&:hover": {

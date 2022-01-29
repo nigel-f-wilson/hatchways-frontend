@@ -8,6 +8,7 @@ import chatBubbleIcon from "../../assets/bubble.svg";
 
 const useStyles = makeStyles((theme) => ({
   image: {
+    width: "inherit",
     height: "inherit",
     backgroundImage: `url(${bgImage})`,
     backgroundRepeat: "no-repeat",
@@ -15,11 +16,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
   },
   gradient: {
-    height: "100%",
+    height: "inherit",
     background: `linear-gradient(180deg, rgba(58, 141, 255, 0.85) 0%, rgba(134, 185, 255, 0.85) 100%)`
   },
   iconTextOverlay: {
-    height: "100%",
+    height: "inherit",
     color: theme.palette.common.white,
     padding: "48% 22%"
   },
