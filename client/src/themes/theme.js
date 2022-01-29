@@ -37,7 +37,6 @@ export const theme = createTheme({
         color: "#b0b0b0",
 
       },
-      
     },
     MuiFormLabel: {
       asterisk: {
@@ -59,8 +58,8 @@ export const theme = createTheme({
 
     },
     secondary: { 
-      main: "#B0B0B0",
-      contrastText: "#fff"
+      main: "#86B9FF",
+      contrastText: "#B0B0B0"
     }
   }
 });
