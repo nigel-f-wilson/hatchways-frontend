@@ -86,18 +86,13 @@ const Login = (props) => {
 
   function MobileLayout() {
     return (
-        <Grid container className={classes.mobileRoot} >
-          <Grid item xs={12} className={classes.mobileHeader}>
-            <WelcomeHeader />
-          </Grid>
-          <Grid item xs={1} md={0} />
-          <Grid item xs={5} className={classes.formArea} >
-            <LoginForm handleLogin={handleLogin} />
-          </Grid>
-          <Box className={classes.topRight} >
-            <LinkToSignup />
-          </Box>
-        </Grid>
+      <Box container className={classes.mobileRoot} >
+      <WelcomeHeader className={classes.mobileHeader} />
+        <Paper className={classes.mobilePaper} >
+          <LoginForm  handleLogin={handleLogin}  />
+          <LinkToSignup />
+        </Paper>
+      </Box>
     );
   }
 };
