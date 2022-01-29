@@ -23,11 +23,6 @@ export const theme = createTheme({
     }
   },
   overrides: {
-    Mui: {
-      focused: {
-        color: "#b0b0b0"
-      },
-    },
     MuiInput: {
       input: {
         fontWeight: "bold",
@@ -35,15 +30,14 @@ export const theme = createTheme({
       }
     },
     MuiInputLabel: {
-      root: {
-        color: "#b0b0b0"
+      "root": {
+        "&$focused": {
+          color: "#b0b0b0"
+        },
+        color: "#b0b0b0",
+
       },
-      focused: {
-        color: "#b0b0b0"
-      },
-      root: {
-        color: "#b0b0b0"
-      },
+      
     },
     MuiFormLabel: {
       asterisk: {
