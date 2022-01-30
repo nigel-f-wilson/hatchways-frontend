@@ -3,7 +3,7 @@ import { Grid, Box, Paper } from "@material-ui/core";
 
 import WelcomeHeader from "./WelcomeHeader";
 import { LinkToLogin, LinkToSignup } from "./Navigation";
-import { LoginForm, SignupForm } from "./Forms";
+import { Form } from "./Form";
 import { useScreenWidth } from "../../hooks";
 
 import useStyles from "./styles";
@@ -14,15 +14,6 @@ export function ResponsiveLayout(props) {
   const { page, login, register } = props
 
   let layout = (width > 850) ? "desktop" : "mobile"
-
-  let form = getForm(page)
-  function getForm(page) {
-    if (page === "signup") {
-      return <SignupForm register={register} />
-    } else if (page === "login") {
-      return <LoginForm login={login} />
-    } else { console.error("DesktopLayout recieved invalid page prop.") }
-  }
 
   let navigation = getNavigation(page)
   function getNavigation(page) {
@@ -43,7 +34,11 @@ export function ResponsiveLayout(props) {
         </Grid>
         <Grid item xs={1} md={false} />
         <Grid item xs={5} className={classes.desktopFormArea} >
-          {form}
+          <Form
+            formType={page}
+            login={login}
+            register={register}
+          />
         </Grid>
         <Box className={classes.topRight} >
           {navigation}
@@ -56,8 +51,12 @@ export function ResponsiveLayout(props) {
       <Box className={classes.mobileRoot} >
         <WelcomeHeader className={classes.mobileHeader} />
         <Paper className={classes.mobilePaper} >
-          {form}
           {navigation}
+          <Form
+            formType={page}
+            login={login}
+            register={register}
+          />
         </Paper>
       </Box>
     );

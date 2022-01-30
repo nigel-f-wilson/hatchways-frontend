@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -9,8 +8,6 @@ import {
   FormHelperText
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -25,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     width: "160px",
-    height: "56px",
+    minHeight: "56px",
     margin: "1rem auto",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
@@ -35,68 +32,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LoginForm = (props) => {
-  const { login } = props
-  const classes = useStyles();
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    const username = event.target.username.value;
-    // const email = event.target.email.value;
-    const password = event.target.password.value;
-    await login({ username, password });
-  };
-
-  return (
-    <Box component="form"
-      className={classes.form}
-      onSubmit={handleLogin}
-    >
-      <Typography children="Welcome back!" variant="h2" />
-      {/* <FormControl margin="normal" required fullWidth className={classes.input} >
-        <TextField
-          label="E-mail address"
-          aria-label="email"
-          name="email"
-          type="email"
-          autoComplete="off"
-          required
-        />
-      </FormControl> */}
-      <FormControl margin="normal" required fullWidth className={classes.input} >
-        <TextField
-          label="Username"
-          aria-label="username"
-          name="username"
-          type="text"
-          autoComplete="off"
-          required
-        />
-      </FormControl>
-      <FormControl margin="normal" required fullWidth className={classes.input}  >
-        <TextField
-          label="Password"
-          aria-label="password"
-          type="password"
-          name="password"
-          autoComplete="off"
-          required
-        />
-      </FormControl>
-      <Button 
-        className={classes.button}
-        type="submit" 
-        variant="contained" 
-      >
-        Login
-      </Button>
-    </Box>
-  )
+export const Form = (props) => {
+  const { formType, login, register } = props
+  if (formType === "signup") {
+    return <SignupForm register={register} />
+  } 
+  else if (formType === "login") {
+    return <LoginForm login={login} />
+  } 
+  else { console.error("DesktopLayout recieved invalid page prop.") }
 }
 
-export const SignupForm = (props) => {
+const SignupForm = (props) => {
   const { register } = props
-
   const classes = useStyles();
   const [error, setError] = useState(false);
 
@@ -106,15 +54,11 @@ export const SignupForm = (props) => {
     const email = event.target.email.value;
     const password = event.target.password.value;
     const confirmPassword = event.target.confirmPassword.value;
-
     if (password !== confirmPassword) {
       setError("Passwords must match")
-      // setFormErrorMessage({ confirmPassword: "Passwords must match" });
       return;
     }
-    else {
-      setError(false)
-    }
+    else { setError(false) }
     await register({ username, email, password });
   };
 
@@ -143,7 +87,6 @@ export const SignupForm = (props) => {
           autoComplete="off"
           required
         />
-        {/* <FormHelperText children={error ? "Passwords must match" : null} /> */}
       </FormControl>
       <FormControl margin="normal" required fullWidth className={classes.input} error={error} >
         <TextField
@@ -180,3 +123,50 @@ export const SignupForm = (props) => {
   )
 }
 
+const LoginForm = (props) => {
+  const { login } = props
+  const classes = useStyles();
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const username = event.target.username.value;
+    const password = event.target.password.value;
+    await login({ username, password });
+  };
+
+  return (
+    <Box component="form"
+      className={classes.form}
+      onSubmit={handleLogin}
+    >
+      <Typography children="Welcome back!" variant="h2" />
+      <FormControl margin="normal" required fullWidth className={classes.input} >
+        <TextField
+          label="Username"
+          aria-label="username"
+          name="username"
+          type="text"
+          autoComplete="off"
+          required
+        />
+      </FormControl>
+      <FormControl margin="normal" required fullWidth className={classes.input}  >
+        <TextField
+          label="Password"
+          aria-label="password"
+          type="password"
+          name="password"
+          autoComplete="off"
+          required
+        />
+      </FormControl>
+      <Button
+        className={classes.button}
+        type="submit"
+        variant="contained"
+      >
+        Login
+      </Button>
+    </Box>
+  )
+}
