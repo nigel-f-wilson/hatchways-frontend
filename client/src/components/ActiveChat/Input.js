@@ -1,33 +1,62 @@
 import React, { useState } from "react";
-import { FormControl, FilledInput } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
 
+import { FormControl, FilledInput, Icon, IconButton } from "@material-ui/core";
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import ImagePickerDialog from "./ImagePickerDialog";
+
 const useStyles = makeStyles(() => ({
   root: {
     justifySelf: "flex-end",
-    marginTop: 15
+    marginTop: 15,
+    
+  },
+  row:{
+    marginBottom: 20,
+    display: "flex",
+    flexDirection: "row"
   },
   input: {
+    flex: "2 0 80%",
     height: 70,
     backgroundColor: "#F4F6FA",
     borderRadius: 8,
-    marginBottom: 20
+  },
+  photoIcon: {
+    margin: "0 0.5rem"
   }
 }));
 
 const Input = (props) => {
   const classes = useStyles();
-  const [text, setText] = useState("");
   const { postMessage, otherUser, conversationId, user } = props;
 
+  const [text, setText] = useState("");
+  const [imagePickerOpen, setImagePickerOpen] = React.useState(false);
+  const [selectedImageFiles, setSelectedImageFiles] = React.useState([]);
+
+  const openImagePicker = () => { setImagePickerOpen(true) };
+  const closeImagePicker = (value) => { 
+    setSelectedImageFiles(value)
+    setImagePickerOpen(false) 
+  };
+
+  
+  
   const handleChange = (event) => {
     setText(event.target.value);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+
+    const form = event.currentTarget;
+    const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
+    console.log('fileInput', fileInput);
+
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
     const reqBody = {
       text: event.target.text.value,
@@ -41,7 +70,7 @@ const Input = (props) => {
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
-      <FormControl fullWidth hiddenLabel>
+      <FormControl hiddenLabel className={classes.row}>
         <FilledInput
           classes={{ root: classes.input }}
           disableUnderline
@@ -49,11 +78,28 @@ const Input = (props) => {
           value={text}
           name="text"
           onChange={handleChange}
+          
+          
+          // autoComplete="false"
+        />
+        <IconButton 
+          className={classes.photoIcon}
+          children={<PhotoLibraryIcon fontSize="large" />}
+          aria-label="send a photo" 
+          onClick={openImagePicker}
+        />
+        <ImagePickerDialog 
+          selectedImageFiles={selectedImageFiles}
+          open={imagePickerOpen}
+          onClose={closeImagePicker}
         />
       </FormControl>
     </form>
   );
 };
+ 
+
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
