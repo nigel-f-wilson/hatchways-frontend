@@ -27,7 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LinkToSignup = (props) => {
+export const Link = (props) => {
+  const { page } = props
+  return (page === "login") ? <LinkToSignup /> : <LinkToLogin />
+};
+
+const LinkToSignup = () => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -47,7 +52,7 @@ export const LinkToSignup = (props) => {
   );
 };
 
-export const LinkToLogin = (props) => {
+const LinkToLogin = () => {
   const classes = useStyles();
   const history = useHistory();
 
