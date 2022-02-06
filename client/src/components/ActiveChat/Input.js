@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
@@ -37,15 +37,9 @@ const Input = (props) => {
   // const [imagePickerOpen, setImagePickerOpen] = React.useState(false);
 
   const [selectedImageURLs, setSelectedImageURLs] = useState()  
-  const [selectedImageData, setSelectedImageData] = useState()  
-
-  // const openImagePicker = () => { setImagePickerOpen(true) };
-  // const closeImagePicker = (value) => { 
-  //   selectedImageURLs(value)
-  //   setImagePickerOpen(false) 
-  // };
-
+  const [selectedImageData, setSelectedImageData] = useState()
   
+  const fileInput = useRef();
   
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -114,8 +108,18 @@ const Input = (props) => {
           className={classes.photoIcon}
           children={<PhotoLibraryIcon fontSize="large" />}
           aria-label="send a photo" 
-          onClick={openImagePicker}
+          // onClick={openImagePicker}
+          // onClick={openImagePicker}
+          onClick={() => fileInput.current.click()}
+
         />
+        <input 
+          ref={fileInput}
+          type="file"
+          multiple
+          style={{ display: 'none' }} 
+        />
+
         
       </FormControl>
       {/* <ImagePickerDialog
