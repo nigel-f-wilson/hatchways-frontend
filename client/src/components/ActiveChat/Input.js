@@ -3,20 +3,23 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
 
-import { FormControl, FilledInput, Icon, IconButton} from "@material-ui/core";
+import { Box, FormControl, FilledInput, IconButton} from "@material-ui/core";
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
-import ImagePickerDialog from "./ImagePickerDialog";
 
 const useStyles = makeStyles(() => ({
-  root: {
+  inputPreviewContainer: {
     justifySelf: "flex-end",
     marginTop: 15,
-    
-  },
-  row:{
-    marginBottom: 20,
+    maxHeight: "30rem",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "column",
+    borderRadius: "1rem",
+    border: "solid #CCC 3px",
+    padding: 8
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row",
   },
   input: {
     flex: "2 0 80%",
@@ -26,6 +29,13 @@ const useStyles = makeStyles(() => ({
   },
   photoIcon: {
     margin: "0 0.5rem"
+  },
+  previewThumbnail: {
+    maxHeight: "9rem",
+    maxWidth: "8rem",
+    backgroundSize: "cover",
+    marginRight: 8,
+    marginBottom: 8
   }
 }));
 
@@ -34,109 +44,113 @@ const Input = (props) => {
   const { postMessage, otherUser, conversationId, user } = props;
 
   const [text, setText] = useState("");
-  // const [imagePickerOpen, setImagePickerOpen] = React.useState(false);
-
-  const [selectedImageURLs, setSelectedImageURLs] = useState()  
-  const [selectedImageData, setSelectedImageData] = useState()
+  const [selectedImageURLs, setSelectedImageURLs] = useState([])  
   
   const fileInput = useRef();
   
   const handleTextChange = (event) => {
     setText(event.target.value);
   };
-
   
+  function handleImageChange(changeEvent) {
+    const files = Array.from(changeEvent.target.files)
+    let readFileData = []
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function (onLoadEvent) {
+        let loadEventResult = onLoadEvent.target.result
+        readFileData = readFileData.concat(loadEventResult)
+        setSelectedImageURLs(readFileData);
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
   // this is the original handelSubmit method.
   // It needs adapted to be able to use with image sender
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-
-    const form = event.currentTarget;
-    const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
-    console.log('fileInput', fileInput);
-
-    // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
+    
+    let secureURLs = null
+    if (selectedImageURLs.length > 0) {
+      secureURLs = await uploadFilesToCloudinary(selectedImageURLs)
+    }
     const reqBody = {
       text: event.target.text.value,
       recipientId: otherUser.id,
       conversationId,
-      sender: conversationId ? null : user
+      sender: conversationId ? null : user,
+      attachments: secureURLs
     };
     await postMessage(reqBody);
     setText("");
+    setSelectedImageURLs([]);
   };
 
-  function handleImageChange(changeEvent) {
-    const reader = new FileReader();
-
-    reader.onload = function (onLoadEvent) {
-      setSelectedImageURLs(onLoadEvent.target.result);
-      setSelectedImageData(undefined);
+  async function uploadFilesToCloudinary(filesArray) {
+    let secureURLs = []
+    for (let i = 0; i < filesArray.length; i++) {
+      const formDataForCloudinary = new FormData()
+      formDataForCloudinary.append("file", filesArray[i])
+      formDataForCloudinary.append('upload_preset', 'hatchways-messenger-uploads')
+      const requestResponseData = await fetch('https://api.cloudinary.com/v1_1/nola-stem-garden/image/upload', {
+        method: 'POST',
+        body: formDataForCloudinary
+      }).then(res => res.json())
+      console.log("DATA: ", requestResponseData);
+      secureURLs = secureURLs.concat(requestResponseData.secure_url)
     }
-
-    reader.readAsDataURL(changeEvent.target.files[0]);
+    setSelectedImageURLs([])
+    return secureURLs
   }
 
-  const handleImageUpload = async (event) => {
-    event.preventDefault();
-
-
-    const form = event.currentTarget;
-    console.log('form', form);
-    // const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
-    // console.log('fileInput', fileInput);
-
-    
-  };
-
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <FormControl hiddenLabel className={classes.row}>
-        <FilledInput
-          classes={{ root: classes.input }}
-          disableUnderline
-          placeholder="Type something..."
-          value={text}
-          name="text"
-          onChange={handleTextChange}
-          
-          
-          // autoComplete="false"
+    <form 
+      className={classes.inputPreviewContainer}
+      onSubmit={handleFormSubmit}
+    >
+      <FormControl hiddenLabel >
+        <ImagePreviewArea 
+          imageURLs={selectedImageURLs}
         />
-        <IconButton 
-          className={classes.photoIcon}
-          children={<PhotoLibraryIcon fontSize="large" />}
-          aria-label="send a photo" 
-          // onClick={openImagePicker}
-          // onClick={openImagePicker}
-          onClick={() => fileInput.current.click()}
-
-        />
-        <input 
-          ref={fileInput}
-          type="file"
-          multiple
-          style={{ display: 'none' }} 
-        />
-
-        
+        <Box className={classes.row} >
+          <FilledInput
+            className={classes.input}
+            disableUnderline
+            placeholder="Type something..."
+            value={text}
+            name="text"
+            onChange={handleTextChange}
+          />
+          <IconButton
+            className={classes.photoIcon}
+            children={<PhotoLibraryIcon fontSize="large" />}
+            aria-label="send a photo"
+            onClick={() => fileInput.current.click()}
+          />
+          <input
+            ref={fileInput}
+            type="file"
+            name="file"
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+        </Box>
       </FormControl>
-      {/* <ImagePickerDialog
-        open={imagePickerOpen}
-        onClose={closeImagePicker}
-        selectedImageURLs={selectedImageURLs}
-        selectedImageData={selectedImageData}
-        handleImageChange={handleImageChange}
-        handleImageUpload={handleImageUpload}
-      /> */}
-
     </form>
   );
 };
  
-
-
+function ImagePreviewArea(props) {
+  const classes = useStyles();
+  const { imageURLs } = props
+  return (
+    <Box>
+      { imageURLs.map(url => <img key={url.toString()} src={url} className={classes.previewThumbnail} alt="uploaded preview" />) }
+    </Box>
+  )
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
