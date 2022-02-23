@@ -38,14 +38,16 @@ const useStyles = makeStyles(() => ({
     maxWidth: "450px"
   },
   pictureHeader: {
-    backgroundSize: "cover",
-    width: "250px",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    width: "300px",
     minHeight: "200px"
   },
   pictureBubble: {
     backgroundSize: "cover",
     minWidth: "200px",
-    maxWidth: "250px",
+    maxWidth: "200px",
     minHeight: "200px"
   },
   pictureRow: {
