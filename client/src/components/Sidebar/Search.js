@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, FilledInput, InputAdornment } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@mui/icons-material/Search";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({

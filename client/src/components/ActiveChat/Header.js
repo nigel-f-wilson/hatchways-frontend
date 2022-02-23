@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const useStyles = makeStyles((theme) => ({
   root: {
