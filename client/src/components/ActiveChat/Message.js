@@ -74,7 +74,7 @@ const Message = (props) => {
   const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
   const textClassName = (type === "sender") ? [classes.text, classes.senderText] : [classes.text, classes.recipientText]
 
-  let url = (attachments !== null && attachments.length === 1) ? attachments[0] : null
+  let url = (attachments?.length === 1) ? attachments[0] : null  
   let pictureDisplay = (url === null) ? "none" : "flex"
   const textBubble = (
     <Box className={bubbleClassName}>
@@ -97,7 +97,6 @@ const Message = (props) => {
       )}
     </Box>
   )
-  console.log("Rendering ALL TYPES   MESSAGE!!!!!!!!!!!!");
 
   return (
     <>
