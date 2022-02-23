@@ -92,11 +92,13 @@ const Input = (props) => {
     for (let i = 0; i < filesArray.length; i++) {
       const formDataForCloudinary = new FormData()
       formDataForCloudinary.append("file", filesArray[i])
-      formDataForCloudinary.append('upload_preset', 'hatchways-messenger-uploads')
-      const requestResponseData = await fetch('https://api.cloudinary.com/v1_1/nola-stem-garden/image/upload', {
+      formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+      
+      const requestResponseData = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
         method: 'POST',
         body: formDataForCloudinary
       }).then(res => res.json())
+
       console.log("DATA: ", requestResponseData);
       secureURLs = secureURLs.concat(requestResponseData.secure_url)
     }
