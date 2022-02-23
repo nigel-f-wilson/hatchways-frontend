@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
 
 import { Box, FormControl, FilledInput, IconButton} from "@material-ui/core";
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 
 const useStyles = makeStyles(() => ({
   inputPreviewContainer: {
@@ -124,7 +124,7 @@ const Input = (props) => {
           />
           <IconButton
             className={classes.photoIcon}
-            children={<PhotoLibraryIcon fontSize="large" />}
+            children={<ContentCopyOutlinedIcon fontSize="large" />}
             aria-label="send a photo"
             onClick={() => fileInput.current.click()}
           />
