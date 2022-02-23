@@ -70,7 +70,6 @@ const Input = (props) => {
   // It needs adapted to be able to use with image sender
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    
     let secureURLs = null
     if (selectedImageURLs.length > 0) {
       secureURLs = await uploadFilesToCloudinary(selectedImageURLs)
@@ -87,7 +86,7 @@ const Input = (props) => {
     setSelectedImageURLs([]);
   };
 
-  async function uploadFilesToCloudinary(filesArray) {
+  const uploadFilesToCloudinary = async (filesArray) => {
     let secureURLs = []
     for (let i = 0; i < filesArray.length; i++) {
       const formDataForCloudinary = new FormData()
