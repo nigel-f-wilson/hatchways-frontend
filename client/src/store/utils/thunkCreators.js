@@ -109,6 +109,7 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
+const savePicture = async (file) => {
   const cloudinaryRequest = new FormData()
   formDataForCloudinary.append("file", file)
   formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
@@ -118,17 +119,16 @@ export const postMessage = (body) => async (dispatch) => {
     cloudinaryRequest
   );
   return cloudinarySecureUrl;
+}; 
+
 export const uploadFilesToCloudinary = async (filesArray) => {
   try {
-    let secureURLs = []
-    for (let i = 0; i < filesArray.length; i++) {
-    }
+    let secureURLs = Promise.all(filesArray.forEach(file => savePicture(file))).then(res => res.json())
     return secureURLs
   } catch (error) {
     console.error(error);
   }
 }
-
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
