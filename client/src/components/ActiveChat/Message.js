@@ -70,18 +70,6 @@ const Message = (props) => {
   let url = (attachments?.length === 1) ? attachments[0] : null  
   let pictureDisplay = (url === null) ? "none" : "flex"
   
-  
-
-  const pictureRow = (
-    <Box className={classes.pictureRow} >
-      {attachments && attachments.length > 1 && attachments.map(url =>
-        <Box key={url} className={bubbleClassName}  >
-          <Box className={classes.pictureBubble} style={{ backgroundImage: `url(${url})` }} />
-        </Box>
-      )}
-    </Box>
-  )
-
   return (
     <>
       <TimeString 
@@ -96,7 +84,10 @@ const Message = (props) => {
         pictureDisplay={pictureDisplay}
         bubbleClassName={bubbleClassName}
       />
-      {pictureRow}
+      <PictureRow 
+        attachments={attachments}
+        type={type} 
+      />
     </>
   )
 }
@@ -126,8 +117,20 @@ const TextBubble = (props) => {
 
 }
 
+const PictureRow = (props) => {
+  const classes = useStyles(props);
+  const { attachments, type } = props
+  const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
 
+  return (
+    <Box className={classes.pictureRow} >
+      {attachments && attachments.length > 1 && attachments.map(url =>
+        <Box key={url} className={bubbleClassName}  >
+          <Box className={classes.pictureBubble} style={{ backgroundImage: `url(${url})` }} />
+        </Box>
+      )}
+    </Box>
+  )
+}
 
 export default Message
-
-
