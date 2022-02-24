@@ -61,7 +61,6 @@ const useStyles = makeStyles({
 });
 
 const Message = (props) => {
-  const classes = useStyles(props);
   const { time, message, otherUser } = props
   const { text, attachments } = message
 
@@ -82,7 +81,6 @@ const Message = (props) => {
         url={url}
         text={text}
         pictureDisplay={pictureDisplay}
-        bubbleClassName={bubbleClassName}
       />
       <PictureRow 
         attachments={attachments}
@@ -104,8 +102,9 @@ const TimeString = (props) => {
 
 const TextBubble = (props) => {
   const classes = useStyles(props);
-  const { bubbleClassName, type, url, text, pictureDisplay } = props
+  const { type, url, text, pictureDisplay } = props
 
+  const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
   const textClassName = (type === "sender") ? [classes.text, classes.senderText] : [classes.text, classes.recipientText]
 
   return (
@@ -114,7 +113,6 @@ const TextBubble = (props) => {
       <Typography className={textClassName}>{text}</Typography>
     </Box>
   )
-
 }
 
 const PictureRow = (props) => {
