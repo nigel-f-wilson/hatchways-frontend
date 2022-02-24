@@ -109,21 +109,19 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
+  const cloudinaryRequest = new FormData()
+  formDataForCloudinary.append("file", file)
+  formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+  
+  const { cloudinarySecureUrl } = await axios.post(
+    process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, 
+    cloudinaryRequest
+  );
+  return cloudinarySecureUrl;
 export const uploadFilesToCloudinary = async (filesArray) => {
   try {
     let secureURLs = []
     for (let i = 0; i < filesArray.length; i++) {
-      const formDataForCloudinary = new FormData()
-      formDataForCloudinary.append("file", filesArray[i])
-      formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
-
-      const requestResponseData = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
-        method: 'POST',
-        body: formDataForCloudinary
-      }).then(res => res.json())
-
-      console.log("DATA: ", requestResponseData);
-      secureURLs = secureURLs.concat(requestResponseData.secure_url)
     }
     return secureURLs
   } catch (error) {
