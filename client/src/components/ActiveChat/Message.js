@@ -67,14 +67,6 @@ const Message = (props) => {
 
   const type = (otherUser) ? "recipient" : "sender"
 
-  const timeString = (type === "sender") ? (
-    <Typography className={classes.time}>{time}</Typography>
-  ) : (
-    <Typography className={classes.time}>{otherUser.username} {time}</Typography>
-  )
-
-  const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
-
   let url = (attachments?.length === 1) ? attachments[0] : null  
   let pictureDisplay = (url === null) ? "none" : "flex"
   
@@ -92,7 +84,11 @@ const Message = (props) => {
 
   return (
     <>
-      {timeString}
+      <TimeString 
+        type={type}
+        time={time}
+        otherUser={otherUser}
+      />
       <TextBubble 
         type={type}
         url={url}
@@ -102,6 +98,16 @@ const Message = (props) => {
       />
       {pictureRow}
     </>
+  )
+}
+
+const TimeString = (props) => {
+  const classes = useStyles(props)
+  const { type, time, otherUser } = props
+  return (type === "sender") ? (
+    <Typography className={classes.time}>{time}</Typography>
+  ) : (
+    <Typography className={classes.time}>{otherUser.username} {time}</Typography>
   )
 }
 
