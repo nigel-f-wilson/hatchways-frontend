@@ -110,22 +110,25 @@ export const postMessage = (body) => async (dispatch) => {
 };
 
 export const uploadFilesToCloudinary = async (filesArray) => {
-  let secureURLs = []
-  for (let i = 0; i < filesArray.length; i++) {
-    const formDataForCloudinary = new FormData()
-    formDataForCloudinary.append("file", filesArray[i])
-    formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+  try {
+    let secureURLs = []
+    for (let i = 0; i < filesArray.length; i++) {
+      const formDataForCloudinary = new FormData()
+      formDataForCloudinary.append("file", filesArray[i])
+      formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
 
-    const requestResponseData = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
-      method: 'POST',
-      body: formDataForCloudinary
-    }).then(res => res.json())
+      const requestResponseData = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
+        method: 'POST',
+        body: formDataForCloudinary
+      }).then(res => res.json())
 
-    console.log("DATA: ", requestResponseData);
-    secureURLs = secureURLs.concat(requestResponseData.secure_url)
+      console.log("DATA: ", requestResponseData);
+      secureURLs = secureURLs.concat(requestResponseData.secure_url)
+    }
+    return secureURLs
+  } catch (error) {
+    console.error(error);
   }
-  // setSelectedImageURLs([])
-  return secureURLs
 }
 
 
