@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { postMessage } from "../../store/utils/thunkCreators";
+import { postMessage, uploadFilesToCloudinary } from "../../store/utils/thunkCreators";
 
 import { Box, FormControl, FilledInput, IconButton} from "@material-ui/core";
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
@@ -66,13 +66,12 @@ const Input = (props) => {
     })
   }
 
-  // this is the original handelSubmit method.
-  // It needs adapted to be able to use with image sender
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     let secureURLs = null
     if (selectedImageURLs.length > 0) {
       secureURLs = await uploadFilesToCloudinary(selectedImageURLs)
+      setSelectedImageURLs([])
     }
     const reqBody = {
       text: event.target.text.value,
@@ -85,25 +84,6 @@ const Input = (props) => {
     setText("");
     setSelectedImageURLs([]);
   };
-
-  const uploadFilesToCloudinary = async (filesArray) => {
-    let secureURLs = []
-    for (let i = 0; i < filesArray.length; i++) {
-      const formDataForCloudinary = new FormData()
-      formDataForCloudinary.append("file", filesArray[i])
-      formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
-      
-      const requestResponseData = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
-        method: 'POST',
-        body: formDataForCloudinary
-      }).then(res => res.json())
-
-      console.log("DATA: ", requestResponseData);
-      secureURLs = secureURLs.concat(requestResponseData.secure_url)
-    }
-    setSelectedImageURLs([])
-    return secureURLs
-  }
 
   return (
     <form 
