@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   time: {
     fontSize: 11,
     color: "#BECCE2",
@@ -37,13 +37,15 @@ const useStyles = makeStyles(() => ({
     margin: 4,
     maxWidth: "450px"
   },
-  pictureHeader: {
+  pictureHeader: (props) => ({
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     width: "300px",
-    minHeight: "200px"
-  },
+    minHeight: "200px",
+    backgroundImage: `url(${props.url})`,
+    display: `${props.pictureDisplay}`,
+  }),
   pictureBubble: {
     backgroundSize: "cover",
     minWidth: "200px",
@@ -56,10 +58,10 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     maxWidth: "650px"
   },
-}));
+});
 
 const Message = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const { time, message, otherUser } = props
   const { text, attachments } = message
 
@@ -72,21 +74,11 @@ const Message = (props) => {
   )
 
   const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
-  const textClassName = (type === "sender") ? [classes.text, classes.senderText] : [classes.text, classes.recipientText]
 
   let url = (attachments?.length === 1) ? attachments[0] : null  
   let pictureDisplay = (url === null) ? "none" : "flex"
-  const textBubble = (
-    <Box className={bubbleClassName}>
-      <Box className={classes.pictureHeader}
-        style={{
-          backgroundImage: `url(${url})`,
-          display: pictureDisplay
-        }}
-      />
-      <Typography className={textClassName}>{text}</Typography>
-    </Box>
-  )
+  
+  
 
   const pictureRow = (
     <Box className={classes.pictureRow} >
@@ -101,10 +93,35 @@ const Message = (props) => {
   return (
     <>
       {timeString}
-      {textBubble}
+      <TextBubble 
+        type={type}
+        url={url}
+        text={text}
+        pictureDisplay={pictureDisplay}
+        bubbleClassName={bubbleClassName}
+      />
       {pictureRow}
     </>
   )
 }
 
+const TextBubble = (props) => {
+  const classes = useStyles(props);
+  const { bubbleClassName, type, url, text, pictureDisplay } = props
+
+  const textClassName = (type === "sender") ? [classes.text, classes.senderText] : [classes.text, classes.recipientText]
+
+  return (
+    <Box className={bubbleClassName}>
+      <Box className={classes.pictureHeader} url={url} pictureDisplay={pictureDisplay} />
+      <Typography className={textClassName}>{text}</Typography>
+    </Box>
+  )
+
+}
+
+
+
 export default Message
+
+
