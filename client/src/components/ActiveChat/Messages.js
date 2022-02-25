@@ -8,8 +8,6 @@ import moment from "moment";
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
   
-  console.log(`Messages component has data: `, messages);
-  
   return (
     <Box>
       {messages.map((message) => {
