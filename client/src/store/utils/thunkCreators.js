@@ -79,7 +79,11 @@ export const fetchConversations = () => async (dispatch) => {
 };
 
 const saveMessage = async (body) => {
-  const { data } = await axios.post("/api/messages", body);
+  const { data } = await axios({
+    method: "post", 
+    url: "/api/messages", 
+    data: body
+  });
   return data;
 };
 
@@ -110,20 +114,34 @@ export const postMessage = (body) => async (dispatch) => {
 };
 
 const savePicture = async (file) => {
-  const cloudinaryRequest = new FormData()
-  formDataForCloudinary.append("file", file)
-  formDataForCloudinary.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+  const body = new FormData()
+  body.append("file", file)
+  body.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
   
-  const { cloudinarySecureUrl } = await axios.post(
-    process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, 
-    cloudinaryRequest
-  );
-  return cloudinarySecureUrl;
+  const data = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
+    method: 'POST',
+    body: body
+  }).then(res => res.json())
+
+  // const data = await axios({
+  //   method: "post",
+  //   url: process.env.REACT_APP_CLOUDINARY_UPLOAD_URL,
+  //   data: body,
+  //   // headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  //   // headers: {"X-Access-Token": null },
+  //   // transformRequest: [function (body, headers) {
+  //   //   return body;
+  //   // }],
+  // });
+  // console.log("DATA: ", data);
+  // console.log("SECURE URL: ", data.secure_url);
+  return data.secure_url;
 }; 
 
-export const uploadFilesToCloudinary = async (filesArray) => {
+export const uploadFilesToCloudinary = async (files) => {
   try {
-    let secureURLs = Promise.all(filesArray.forEach(file => savePicture(file))).then(res => res.json())
+    const uploadPromises = files.map(file => savePicture(file))
+    let secureURLs = Promise.all(uploadPromises)
     return secureURLs
   } catch (error) {
     console.error(error);
