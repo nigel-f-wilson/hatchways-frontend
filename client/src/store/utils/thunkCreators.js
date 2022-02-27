@@ -123,18 +123,14 @@ const savePicture = async (file) => {
     body: body
   }).then(res => res.json())
 
-  // const data = await axios({
-  //   method: "post",
-  //   url: process.env.REACT_APP_CLOUDINARY_UPLOAD_URL,
-  //   data: body,
-  //   // headers: { 'X-Requested-With': 'XMLHttpRequest' },
-  //   // headers: {"X-Access-Token": null },
-  //   // transformRequest: [function (body, headers) {
-  //   //   return body;
-  //   // }],
-  // });
-  // console.log("DATA: ", data);
-  // console.log("SECURE URL: ", data.secure_url);
+  const { data } = axios.post(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, body, {
+  transformRequest: [
+    (body, headers) => {
+      delete headers["x-access-token"];
+      return body;
+    },
+  ],
+});
   return data.secure_url;
 }; 
 
