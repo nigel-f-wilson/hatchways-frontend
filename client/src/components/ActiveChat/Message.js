@@ -9,34 +9,22 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     marginBottom: 5
   },
-  text: {
+  text: (props) => ({
     fontSize: 14,
     letterSpacing: -0.2,
     padding: 8,
     fontWeight: "bold",
-    overflowWrap: "break-word"
-  },
-  senderText: {
-    color: "#91A3C0",
-  },
-  recipientText: {
-    color: "#FFFFFF",
-  },
-  senderBubbleWrapper: {
-    backgroundColor: "#eee",
-    backgroundSize: "cover",
-    overflow: "hidden",
-    borderRadius: "10px 10px 0 10px",
+    overflowWrap: "break-word",
+    color: (props.type === "sender") ? "#91A3C0" : "#FFFFFF",
+  }),
+  bubble: (props) => ({
+    backgroundImage: (props.type === "sender") ? "" : "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)" ,
+    backgroundColor: (props.type === "sender") ? "#eee" : "",
+    borderRadius: (props.type === "sender") ? "10px 10px 0 10px" : "0 10px 10px 10px",
     margin: 4,
     maxWidth: "450px",
-  },
-  recipientBubbleWrapper: {
-    backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
-    borderRadius: "0 10px 10px 10px",
-    overflow: "hidden",
-    margin: 4,
-    maxWidth: "450px"
-  },
+
+  }),
   pictureHeader: (props) => ({
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
@@ -46,18 +34,25 @@ const useStyles = makeStyles({
     backgroundImage: `url(${props.url})`,
     display: `${props.pictureDisplay}`,
   }),
-  pictureBubble: {
-    backgroundSize: "cover",
-    minWidth: "200px",
-    maxWidth: "200px",
-    minHeight: "200px"
-  },
   pictureRow: {
     display: "flex",
     flexDirection: "row-reverse",
     flexWrap: "wrap",
     maxWidth: "650px"
   },
+  pictureBubble: (props) => ({
+    borderRadius: (props.type === "sender") ? "10px 10px 0 10px" : "0 10px 10px 10px",
+    backgroundImage: `url(${props.url})`,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    margin: 4,
+    display: "flex",
+    backgroundSize: "cover",
+    minWidth: "200px",
+    maxWidth: "200px",
+    minHeight: "200px",
+  }),
 });
 
 const Message = (props) => {
@@ -104,30 +99,32 @@ const TextBubble = (props) => {
   const classes = useStyles(props);
   const { type, url, text, pictureDisplay } = props
 
-  const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
-  const textClassName = (type === "sender") ? [classes.text, classes.senderText] : [classes.text, classes.recipientText]
-
   return (
-    <Box className={bubbleClassName}>
+    <Box className={classes.bubble}>
       <Box className={classes.pictureHeader} url={url} pictureDisplay={pictureDisplay} />
-      <Typography className={textClassName}>{text}</Typography>
+      <Typography className={classes.text}>{text}</Typography>
     </Box>
   )
 }
+// Use PropTypes to verify props.type is one of "sender" or "recipient"
 
 const PictureRow = (props) => {
   const classes = useStyles(props);
   const { attachments, type } = props
-  const bubbleClassName = (type === "sender") ? classes.senderBubbleWrapper : classes.recipientBubbleWrapper
-
   return (
     <Box className={classes.pictureRow} >
       {attachments && attachments.length > 1 && attachments.map(url =>
-        <Box key={url} className={bubbleClassName}  >
-          <Box className={classes.pictureBubble} style={{ backgroundImage: `url(${url})` }} />
-        </Box>
+        <PictureBubble type={type} key={url} url={url}  />
       )}
     </Box>
+  )
+}
+
+const PictureBubble = (props) => {
+  const classes = useStyles(props);
+  const { type, url } = props
+  return (
+    <Box className={classes.pictureBubble} key={url} url={url} />
   )
 }
 
