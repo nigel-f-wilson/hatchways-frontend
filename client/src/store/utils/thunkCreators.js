@@ -79,8 +79,7 @@ export const fetchConversations = () => async (dispatch) => {
 };
 
 const saveMessage = async (body) => {
-  const { data } = await axios({
-    method: "post", 
+  const { data } = await axios.post({
     url: "/api/messages", 
     data: body
   });
@@ -141,7 +140,7 @@ const savePicture = async (file) => {
 export const uploadFilesToCloudinary = async (files) => {
   try {
     const uploadPromises = files.map(file => savePicture(file))
-    let secureURLs = Promise.all(uploadPromises)
+    const secureURLs = Promise.all(uploadPromises)
     return secureURLs
   } catch (error) {
     console.error(error);
