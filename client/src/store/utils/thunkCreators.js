@@ -113,6 +113,7 @@ export const postMessage = (body) => async (dispatch) => {
 };
 
 const savePicture = async (file) => {
+  const uploadURL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL
   const body = new FormData()
   body.append("file", file)
   body.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
@@ -122,7 +123,7 @@ const savePicture = async (file) => {
     body: body
   }).then(res => res.json())
 
-  const { data } = axios.post(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, body, {
+  const { data } = await axios.post(uploadURL, body, {
   transformRequest: [
     (body, headers) => {
       delete headers["x-access-token"];
