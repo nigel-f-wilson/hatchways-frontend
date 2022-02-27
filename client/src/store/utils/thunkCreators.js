@@ -79,10 +79,7 @@ export const fetchConversations = () => async (dispatch) => {
 };
 
 const saveMessage = async (body) => {
-  const { data } = await axios.post({
-    url: "/api/messages", 
-    data: body
-  });
+  const { data } = await axios.post("/api/messages", body)
   return data;
 };
 
@@ -94,18 +91,15 @@ const sendMessage = (data, body) => {
   });
 };
 
-// message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
   try {
     const data = await saveMessage(body);
-
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
       dispatch(setNewMessage(data.message));
     }
-
     sendMessage(data, body);
   } catch (error) {
     console.error(error);
@@ -117,20 +111,15 @@ const savePicture = async (file) => {
   const body = new FormData()
   body.append("file", file)
   body.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
-  
-  const data = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, {
-    method: 'POST',
-    body: body
-  }).then(res => res.json())
 
   const { data } = await axios.post(uploadURL, body, {
-  transformRequest: [
-    (body, headers) => {
-      delete headers["x-access-token"];
-      return body;
-    },
-  ],
-});
+    transformRequest: [
+      (body, headers) => {
+        delete headers["x-access-token"];
+        return body;
+      },
+    ],
+  });
   return data.secure_url;
 }; 
 
